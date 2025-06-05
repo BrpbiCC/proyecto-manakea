@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from django.contrib.auth.hashers import make_password, check_password # Importar check_password para el login
+from django.contrib.auth.hashers import make_password, check_password
 from django.core.exceptions import ValidationError
 from .models import Usuario, TipoUsuario # Asegúrate de que 'Usuario' y 'TipoUsuario' estén definidos en models.py
 
@@ -11,7 +11,7 @@ class RegistroClienteForm(ModelForm):
 
     class Meta:
         model = Usuario
-        fields = ['nombre', 'apellido', 'correo', 'password', 'telefono'] # Incluye 'telefono' aquí
+        fields = ['nombre', 'apellido', 'correo', 'password', 'telefono']
         widgets = {
             'password': forms.PasswordInput(),
         }
@@ -31,7 +31,7 @@ class RegistroClienteForm(ModelForm):
         """
         cleaned_data = super().clean()
         password = cleaned_data.get("password")
-        confirm_password = cleaned = cleaned_data.get("confirm_password")
+        confirm_password = cleaned_data.get("confirm_password")
 
         if password and confirm_password and password != confirm_password:
             self.add_error('confirm_password', "Las contraseñas no coinciden.")
@@ -49,7 +49,7 @@ class RegistroClienteForm(ModelForm):
             user.tipo_usuario = tipo_cliente
         except TipoUsuario.DoesNotExist:
             print("Error: El tipo de usuario 'cliente' no existe. Asegúrate de crearlo en la base de datos.")
-            raise # Vuelve a lanzar la excepción para que Django la maneje
+            raise
 
         if commit:
             user.save()
@@ -73,14 +73,11 @@ class LoginForm(forms.Form):
             try:
                 user = Usuario.objects.get(correo=correo)
             except Usuario.DoesNotExist:
-                # Si el correo no existe, lanza un error general para no dar pistas sobre usuarios existentes
                 raise forms.ValidationError("Correo electrónico o contraseña incorrectos.")
 
-            # Verifica la contraseña hasheada
             if not check_password(password, user.password):
                 raise forms.ValidationError("Correo electrónico o contraseña incorrectos.")
 
-            # Si las credenciales son correctas, almacena el usuario en el formulario
             self.user_cache = user
         return cleaned_data
 
@@ -89,3 +86,20 @@ class LoginForm(forms.Form):
         Retorna la instancia del usuario autenticado.
         """
         return getattr(self, 'user_cache', None)
+
+# Formulario para Actualizar el Perfil del Usuario
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Usuario # ¡Importante! Usa tu modelo 'Usuario' aquí
+        fields = ['nombre', 'apellido', 'telefono'] # Campos que quieres permitir editar
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'apellido': forms.TextInput(attrs={'class': 'form-control'}),
+            'telefono': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Asegura que el campo teléfono se muestre correctamente al editar
+        if self.instance and self.instance.telefono:
+            self.fields['telefono'].initial = self.instance.telefono

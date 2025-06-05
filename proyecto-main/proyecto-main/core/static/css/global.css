@@ -1,119 +1,379 @@
+/*
+  GLOBAL.CSS FUSIONADO - VERSIÓN FINAL AJUSTADA AL EXTREMO PARA PERFIL
+  Prioridad: Que la información NO se desborde, haciendo los campos más flexibles.
+*/
+
+/* --- Estilos Generales / Layout --- */
 body {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: #343a40;
+    font-family: Arial, sans-serif;
 }
 
 .main-content {
-  flex: 1;
+    flex: 1;
 }
-/* carousel estilo */
-.carousel-lide{
-    min-height: 380px
-  }
 
-  .card-img-top {
+/* --- Estilos de Carrusel y Cards de Servicios (Hospedaje, Actividades, Gastronomía) --- */
+.carousel-lide {
+    min-height: 380px;
+}
+
+.card-img-top {
     height: 300px;
     object-fit: cover;
-  }
+}
 
-  .card-body {
+.card-body { /* Este es para cards de servicios, se sobrescribe para perfil */
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 250px; 
-  }
-
-  .card-title,
-  .card-text {
-    text-align: center;
-  }
-
-  .btn {
-    margin-top: auto;
-
-  }
-
-  .icono-decorativo {
-  font-size: 80px; /* Tamaño del icono que se le quiere dar */
-  color: rgba(255, 193, 7, 0.4); /* Amarillo del icono */
-  text-align: center;
-  margin-top: 20px;
+    height: 250px;
 }
 
-  .card-custom {
-  background: linear-gradient(135deg, #e0f7fa, #ffffff);
-  border-radius: 15px;
-  padding: 30px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  min-height: 400px; /*Aquí defines la altura mínima del cuadro*/
-  transition: all 0.3s ease;
+.card-title,
+.card-text {
+    text-align: center;
+}
+
+.btn {
+    margin-top: auto;
+}
+
+.icono-decorativo {
+    font-size: 80px;
+    color: rgba(255, 193, 7, 0.4);
+    text-align: center;
+    margin-top: 20px;
+}
+
+.card-custom {
+    background: linear-gradient(135deg, #e0f7fa, #ffffff);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    min-height: 400px;
+    transition: all 0.3s ease;
 }
 
 .card-custom:hover {
-  transform: scale(1.02);
+    transform: scale(1.02);
 }
 
+/* --- Estilos de Secciones Específicas (Clima, Mapa, Actividades, Gastronomía) --- */
 .section-clima-mapa .row {
-  gap: 30px; /*Separación de 3cm aprox  entre Ambos cuadros CLIMA Y UBICACION*/
+    gap: 30px;
 }
 
-.section-actividades{
-
-  margin-top: 20px;
+.section-actividades {
+    margin-top: 20px;
 }
 
-.section-gastronomia{
-
-  margin-top: 20px;
+.section-gastronomia {
+    margin-top: 20px;
 }
 
 #clima p {
-  font-size: 1.1rem;
-  color: #333;
-  margin-bottom: 10px;
+    font-size: 1.1rem;
+    color: #333;
+    margin-bottom: 10px;
 }
 
 #map {
-  width: 100%;
-  height: 300px;
-  border: 2px solid #007BFF;
+    width: 100%;
+    height: 300px;
+    border: 2px solid #007BFF;
 }
 
-/* Tamaño de la foto de background de Vista Inicio */
-.bg{
-  background-image: url(../img/cajon-1.jpg);
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
+/* --- Estilos de Background Images --- */
+.bg {
+    background-image: url(../img/cajon-1.jpg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
 }
 
-/* Tamaño de la foto de background de Vista Hospedajes */
-.bg-2{
-  background-image: url(../img/cajon-2.jpg);
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
+.bg-2 {
+    background-image: url(../img/cajon-2.jpg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
 }
 
-/* Tamaño de la foto de background de Vista Actividad */
-.bg-3{
-  background-image: url(../img/cabalgata.jpg);
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
+.bg-3 {
+    background-image: url(../img/cabalgata.jpg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
 }
 
-/* Tamaño de la foto de background de Vista Gastronomia */
-.bg-4{
-  background-image: url(../img/cajon-4.jpg);
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-size: cover;
+.bg-4 {
+    background-image: url(../img/cajon-4.jpg);
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
 }
 
-/* Popover estilo red */*
-.popover{
-  color: crimson;
+/* --- Estilos de Popover --- */
+.popover {
+    color: crimson;
 }
 
+/* ========================================= */
+/* === ESTILOS PARA LA VISTA DE PERFIL === */
+/* ========================================= */
+
+/* --- Estilos de la Barra de Navegación para Perfil (Ajustes finos) --- */
+.navbar-brand.fw-bold {
+    color: #2c3e50 !important;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+}
+
+.nav-link.welcome-message {
+    color: #6c757d;
+    font-weight: normal;
+}
+
+/* --- Ajustes para las Tarjetas del Perfil (Datos Personales y Reservas) --- */
+.container .card {
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 25px;
+    min-height: auto;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+}
+
+.container .card-header {
+    border-bottom: none;
+    padding: 1rem 1.5rem; /* Reducido un poco para ganar espacio */
+    font-size: 1.1rem; /* Ligeramente más pequeño */
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* Permite que los elementos dentro del header se envuelvan si no hay espacio */
+}
+
+/* Colores para los encabezados de las tarjetas del perfil (ajusta a tu paleta) */
+.container .card-header.bg-primary {
+    background-color: #2c3e50 !important;
+    color: #ffffff !important;
+}
+.container .card-header.bg-info {
+    background-color: #3498db !important;
+    color: #ffffff !important;
+}
+
+.container .card-body {
+    padding: 1rem; /* Reducido a 1rem */
+    height: auto;
+    align-items: flex-start;
+    flex-grow: 1;
+    min-width: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    /* Si el overflow-x: auto no funciona, prueba esto para forzar la barra de desplazamiento horizontal */
+    overflow-x: auto !important; /* Fuerza una barra de desplazamiento horizontal */
+    overflow-y: auto; /* Permite desplazamiento vertical si el contenido es muy alto */
+}
+
+/* Estilos para el texto estático del perfil */
+#staticData {
+    width: 100%;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    min-width: 0;
+}
+
+#staticData p {
+    font-size: 1rem; /* Ligeramente más pequeño */
+    margin-bottom: 0.5rem; /* Menos espacio entre líneas */
+    color: #495057;
+    width: 100%;
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    min-width: 0;
+}
+#staticData p strong {
+    color: #212529;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    min-width: 0;
+}
+
+/* Estilos para el formulario de edición en el perfil */
+#editForm {
+    width: 100%;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    min-width: 0;
+}
+
+/* Nuevo: Estilos para el contenedor de cada campo del formulario (e.g., div.mb-3) */
+#editForm .mb-3,
+#editForm .form-group { /* Asegúrate de que tus contenedores de campo tengan la clase mb-3 o form-group */
+    width: 100%;
+    flex-grow: 1; /* Permite que crezcan para llenar el espacio */
+    flex-shrink: 1; /* Permite que se encojan */
+    min-width: 0; /* IMPRTANTE: Permite que el contenido se encoja dentro */
+}
+
+#editForm .form-label {
+    font-weight: bold;
+    color: #495057;
+    font-size: 0.95rem; /* Ligeramente más pequeño */
+    margin-bottom: 0.25rem; /* Menos espacio */
+    min-width: 0; /* Asegura que la etiqueta también pueda encogerse */
+}
+#editForm .form-control {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    padding: 0.5rem 0.75rem; /* Padding reducido para los campos de entrada */
+    width: 100% !important; /* Fuerza el 100% de ancho, anulando posibles overrides de Bootstrap */
+    max-width: 100% !important; /* Fuerza el 100% de ancho */
+    box-sizing: border-box !important; /* Fuerza box-sizing */
+    word-wrap: break-word; /* ¡MUY IMPORTANTE para números largos! */
+    overflow-wrap: break-word; /* ¡MUY IMPORTANTE! */
+    min-width: 0 !important; /* Permite que el campo se encoja lo máximo posible, anulando overrides */
+    font-size: 0.9rem; /* Reducir el tamaño de fuente del texto DENTRO de los inputs */
+    line-height: 1.2; /* Ajustar la altura de línea si es necesario */
+
+    /* Para números largos, si no quieres que se rompan en varias líneas y prefieres "..." */
+    white-space: nowrap; /* Asegura que el texto permanezca en una línea */
+    overflow: hidden; /* Oculta el texto que se desborda */
+    text-overflow: ellipsis; /* Añade "..." al final si el texto no cabe */
+}
+#editForm .form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+}
+
+/* --- Botones específicos para la página de Perfil --- */
+.card-header .btn-outline-light {
+    border-color: #ffffff;
+    color: #ffffff;
+    font-weight: 600;
+    padding: 0.3rem 0.8rem; /* Botones más pequeños */
+    font-size: 0.85rem; /* Fuente más pequeña en botones */
+    white-space: nowrap; /* Evita que el texto del botón se rompa en varias líneas */
+    margin-left: 0.5rem; /* Espacio entre el título y el botón */
+}
+.card-header .btn-outline-light:hover {
+    background-color: #ffffff;
+    color: #2c3e50;
+}
+.card-header .btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #212529;
+    white-space: nowrap; /* Evita que el texto del botón se rompa en varias líneas */
+    padding: 0.3rem 0.8rem; /* Igual que el otro botón */
+    font-size: 0.85rem;
+}
+.card-header .btn-warning:hover {
+    background-color: #e0a800;
+    border-color: #d39e00;
+}
+
+#profileUpdateForm .btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    font-weight: 600;
+    padding: 0.7rem 1.2rem;
+}
+#profileUpdateForm .btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+/* --- Ajustes de la Tabla de Reservas en el Perfil --- */
+.table {
+    margin-top: 1rem;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+.table thead {
+    background-color: #f1f1f1;
+}
+.table th, .table td {
+    padding: 1rem;
+    vertical-align: middle;
+}
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+/* --- Badges de Estado en la Tabla de Perfil --- */
+.badge {
+    padding: 0.5em 0.8em;
+    border-radius: 0.375rem;
+    font-weight: 600;
+}
+.badge.bg-warning { background-color: #ffc107 !important; color: #212529 !important; }
+.badge.bg-success { background-color: #28a745 !important; }
+.badge.bg-danger { background-color: #dc3545 !important; }
+.badge.bg-secondary { background-color: #6c757d !important; }
+.badge.bg-info { background-color: #17a2b8 !important; }
+
+/* --- Media Queries para el Diseño Responsivo de las Columnas del Perfil --- */
+@media (min-width: 768px) { /* Para pantallas medianas y grandes */
+    .profile-card-col {
+        flex: 0 0 auto;
+        /* Asegúrate de que en tu HTML uses col-md-5 para esta columna si quieres más angosto */
+        width: 41.666667% !important; /* Fuerza al ancho de col-md-5 */
+        max-width: 41.666667% !important; /* Fuerza el max-width */
+    }
+    .profile-row {
+        justify-content: space-between;
+    }
+}
+
+@media (max-width: 767px) { /* Estilos específicos para pantallas pequeñas (móviles y tablets pequeñas) */
+    .container .card-header {
+        padding: 0.8rem 1rem; /* Aún menos padding en el header */
+        font-size: 1rem;
+    }
+    .container .card-body {
+        padding: 0.75rem; /* Menor padding para ganar espacio */
+    }
+    #staticData p,
+    #editForm .form-label,
+    #editForm .form-control {
+        font-size: 0.9rem; /* Reducir ligeramente el tamaño de fuente */
+    }
+    .card-header .btn-outline-light,
+    .card-header .btn-warning {
+        padding: 0.2rem 0.4rem; /* Botones más pequeños */
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) { /* Estilos para móviles muy pequeños */
+    .container .card-header {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.9rem;
+    }
+    .container .card-body {
+        padding: 0.5rem; /* Aún menos padding */
+    }
+    #staticData p,
+    #editForm .form-label,
+    #editForm .form-control {
+        font-size: 0.8rem; /* Un tamaño de fuente más pequeño */
+    }
+    .card-header .btn-outline-light,
+    .card-header .btn-warning {
+        padding: 0.15rem 0.3rem; /* Botones aún más pequeños */
+        font-size: 0.7rem;
+    }
+}

@@ -1,10 +1,10 @@
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
-from django.contrib.auth.decorators import login_required # Importar para proteger vistas
-
-from .forms import RegistroClienteForm, LoginForm # Importa tu LoginForm
-from .models import Usuario, TipoUsuario # Importa tus modelos Usuario y TipoUsuario
+from django.contrib.auth.decorators import login_required
+from .forms import RegistroClienteForm, LoginForm, UserUpdateForm
+from .models import Usuario, TipoUsuario
+from datetime import date
 
 # Vista para la página de inicio pública
 def inicio(request):
@@ -15,54 +15,89 @@ def registro(request):
     if request.method == 'POST':
         form = RegistroClienteForm(request.POST)
         if form.is_valid():
-            user = form.save() # Guarda el usuario y obtén la instancia
+            user = form.save()
             messages.success(request, '¡Su registro fue exitoso! Ahora puede iniciar sesión.')
-            # Redirige a la página de login después de un registro exitoso
-            return redirect('login') # ¡CORREGIDO! Redirige a la URL con nombre 'login'
+            return redirect('login')
     else:
         form = RegistroClienteForm()
-
     return render(request, 'core/registro.html', {'form': form})
 
 # Vista para el inicio de sesión
 def login(request):
     if request.method == 'POST':
-        form = LoginForm(request.POST) # Instancia tu LoginForm con los datos enviados
+        form = LoginForm(request.POST)
         if form.is_valid():
-            # El formulario ya ha verificado el correo y la contraseña
-            user = form.get_user() # Obtiene la instancia del usuario autenticado
+            user = form.get_user()
             if user:
-                # Usa la función login de Django para establecer la sesión del usuario
                 auth_login(request, user)
                 messages.success(request, f'¡Bienvenido de nuevo, {user.nombre} {user.apellido}!')
-                # Redirige a la página de inicio para usuarios registrados
                 return redirect('inicioregistrado')
             else:
-                # Esto no debería ocurrir si form.is_valid() es True y get_user() devuelve None
                 messages.error(request, 'Ocurrió un error inesperado al iniciar sesión.')
-        else:
-            # Si el formulario no es válido, los errores se mostrarán automáticamente en la plantilla
-            # No es necesario añadir un messages.error aquí, ya que el formulario maneja la validación
-            pass
     else:
-        form = LoginForm() # Instancia un formulario vacío para peticiones GET
-
+        form = LoginForm()
     return render(request, 'core/login.html', {'form': form})
 
 # Vista para cerrar sesión
 def logout_view(request):
-    auth_logout(request) # Cierra la sesión del usuario actual
+    auth_logout(request)
     messages.info(request, 'Has cerrado sesión correctamente.')
-    return redirect('inicio') # Redirige a la página de inicio pública después de cerrar sesión
+    return redirect('inicio')
 
 # Vista para la página de inicio de usuarios registrados
-# @login_required(login_url='login') asegura que solo usuarios autenticados puedan acceder.
-# Si un usuario no autenticado intenta acceder, será redirigido a la URL con nombre 'login'.
 @login_required(login_url='login')
 def inicioregistrado(request):
-    # Cuando un usuario está autenticado, Django automáticamente hace que el objeto 'request.user'
-    # esté disponible en el contexto de la plantilla. 'request.user' será una instancia de tu modelo Usuario.
-    return render(request, 'core/inicioregistrado.html') # No necesitas pasar 'user' explícitamente aquí
+    return render(request, 'core/inicioregistrado.html')
+
+# Vista de perfil actualizada
+@login_required(login_url='login')
+def perfil(request):
+    form_submitted = False # Nueva variable para controlar la visibilidad del formulario
+    if request.method == 'POST':
+        form_submitted = True # Si es un POST, el formulario ha sido enviado
+        form = UserUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, '¡Tu perfil ha sido actualizado con éxito!')
+            return redirect('perfil')
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"Error en '{form.fields[field].label}': {error}")
+    else:
+        form = UserUpdateForm(instance=request.user)
+    
+    reservas = []
+    try:
+        reservas = request.user.reserva_set.all().order_by('-fecha_inicio') 
+
+        hoy = date.today()
+        for r in reservas:
+            if r.fecha_fin and r.fecha_fin < hoy:
+                r.estado_display = 'Completado' 
+            elif r.estado == 'pendiente':
+                r.estado_display = 'Pendiente'
+            elif r.estado == 'confirmado':
+                r.estado_display = 'Confirmado'
+            elif r.estado == 'cancelado':
+                r.estado_display = 'Cancelado'
+            else:
+                r.estado_display = r.estado.capitalize()
+
+    except AttributeError:
+        messages.info(request, "No se encontraron reservas o la configuración del modelo de reservas no es correcta.")
+        reservas = []
+    except Exception as e:
+        messages.error(request, f"Error al cargar reservas: {e}")
+        reservas = []
+
+    context = {
+        'form': form,
+        'reservas': reservas,
+        'user': request.user,
+        'form_submitted': form_submitted, # Pasamos la variable al contexto
+    }
+    return render(request, 'core/perfil.html', context)
 
 # Resto de tus vistas (puedes protegerlas con @login_required si es necesario)
 def hospedaje(request):
@@ -77,18 +112,9 @@ def gastronomia(request):
 def carrito(request):
     return render (request, 'core/carrito.html')
 
-def perfil(request):
-    # También puedes proteger esta vista si es solo para usuarios logueados
-    # @login_required(login_url='login')
-    return render (request, 'core/perfil.html')
-
 @login_required
 def listar_servicios_anfitrion(request):
-    # Aquí iría la lógica para obtener los servicios del anfitrión
-    # Por ejemplo, si tienes un modelo llamado 'Servicio':
-    # servicios = Servicio.objects.filter(anfitrion=request.user)
-    servicios = [] # Placeholder por ahora
-
+    servicios = []
     context = {
         'servicios': servicios,
     }
@@ -96,13 +122,8 @@ def listar_servicios_anfitrion(request):
 
 @login_required
 def listar_reservas_anfitrion(request):
-    # Aquí iría la lógica para obtener los servicios del anfitrión
-    # Por ejemplo, si tienes un modelo llamado 'Servicio':
-    # servicios = Servicio.objects.filter(anfitrion=request.user)
-    servicios = [] # Placeholder por ahora
-
+    servicios = []
     context = {
         'servicios': servicios,
     }
     return render(request, 'core/listar_reservas_anfitrion.html', context)
-
